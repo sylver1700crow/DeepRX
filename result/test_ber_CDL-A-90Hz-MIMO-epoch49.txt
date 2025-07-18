@@ -1,0 +1,5 @@
+
+ f=0, tau=0, Doppler=90, noise= 10dB, BER = &9.952417e-01 ,BLER = & 0.000000e+00 H=CDL-A, ts_epk=epoch49, model=MIMO, now=2025-07-10-13:51:00
+ f=0, tau=0, Doppler=90, noise=  5dB, BER = &9.954488e-01 ,BLER = & 0.000000e+00 H=CDL-A, ts_epk=epoch49, model=MIMO, now=2025-07-10-14:49:10
+ f=0, tau=0, Doppler=90, noise=  5dB, BER = &9.954488e-01 ,BLER = & 0.000000e+00 H=CDL-A, ts_epk=epoch49, model=MIMO, now=2025-07-10-17:23:39
+ f=0, tau=0, Doppler=90, noise=  5dB, BER = &9.954488e-01 ,BLER = & 0.000000e+00 H=CDL-A, ts_epk=epoch49, model=MIMO, now=2025-07-16-14:50:30
