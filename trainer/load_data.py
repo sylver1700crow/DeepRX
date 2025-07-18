@@ -207,7 +207,7 @@ from scipy.io import loadmat
 '''
 
 
-def load_train_data(noise_list=[30], doppler=[75], tr_percent=0.8, phase='train', data_mode= ['CDL-A'], RX_Ants_list=[4]):
+def load_train_data(noise_list=[30,20,10,0,-5,-10], doppler=[90], tr_percent=0.8, phase='train', data_mode= ['CDL-A'], RX_Ants_list=[4]):
     """
     Charge tous les fichiers .mat correspondant à toutes les combinaisons des paramètres
     fournis (noise_list, doppler, data_mode, RX_Ants_list) et retourne un seul ensemble
@@ -230,7 +230,8 @@ def load_train_data(noise_list=[30], doppler=[75], tr_percent=0.8, phase='train'
         for dop in doppler:
             for rx in RX_Ants_list:
                 for snr in noise_list:
-                    mat_path = f'C:/Users/nzide/Desktop/DeepRX/{mode}{snr}dB_{dop}Hz_R_{rx}.mat'
+                    # mat_path = f'C:/Users/nzide/Desktop/DeepRX/{mode}{snr}dB_{dop}Hz_R_{rx}.mat'
+                    mat_path = f'/home/skouame/DeepRX/DeepRX/{mode}{snr}dB_{dop}Hz_R_{rx}.mat'
                     print(f"Chargement: {mat_path}")
                     mat = loadmat(mat_path)
 
@@ -359,7 +360,7 @@ class MyDataset(Dataset):
     # return dataset_loader, len(testset)
     return input_x, sig_list, dop_list, Ideal_X, Ideal_H
     '''
-def load_data(dop=75,snr=[0],data_per=1.0,phase='train',dataset_name=['CDL-A'],RX_Ants_list=[4]):
+def load_data(dop=90,snr=[0],data_per=1.0,phase='train',dataset_name=['CDL-A'],RX_Ants_list=[4]):
     """
     Charge les données selon la phase et les arguments donnés.
     - Pour l'entraînement, passer toutes les configs à mixer dans snr, dop, data_mode, RX_Ants_list.
@@ -632,7 +633,7 @@ def shift(A, f, tau):
     return Yms_tr, Hls_tr, Xid_tr, X0_tr, sigma 
 '''
 
-def data_with_phase_shift_new(doppler=75, noise_list=10, f=100, tau=72, tr_percent=0.8, phase='test',data_mode='CDL-A',RX_Ants_list=[4]):
+def data_with_phase_shift_new(doppler=90, noise_list=30, f=100, tau=72, tr_percent=0.8, phase='test',data_mode='CDL-A',RX_Ants_list=[4]):
     import time
     t_start = time.time()
     # Compatibilité des formats
@@ -648,7 +649,8 @@ def data_with_phase_shift_new(doppler=75, noise_list=10, f=100, tau=72, tr_perce
         for dop in doppler:
             for rx in RX_Ants_list:
                 for snr in noise_list:
-                    mat_path = f'C:/Users/nzide/Desktop/DeepRX/{mode}{snr}dB_{dop}Hz_R_{rx}.mat'
+                    # mat_path = f'C:/Users/nzide/Desktop/DeepRX/{mode}{snr}dB_{dop}Hz_R_{rx}.mat'
+                    mat_path = f'/home/skouame/DeepRX/DeepRX/{mode}{snr}dB_{dop}Hz_R_{rx}.mat' 
                     print(f"Chargement: {mat_path}")
                     mat = loadmat(mat_path)
 
@@ -725,7 +727,7 @@ def load_phase_shift_data(dop, snr=[0], f=100, tau=72, data_per=1.0, phase='trai
     # testset = MyDataset(x = input_x, y = Ideal_X)
     # dataset_loader = torch.utils.data.DataLoader(testset, batch_size=my_batch_size, shuffle=shuffle, num_workers=num_workers)
     # return dataset_loader, len(testset)
-    return input_x, Ideal_X, dop_list, sig_list 
+    # return input_x, Ideal_X, dop_list, sig_list 
 
 
 

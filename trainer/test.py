@@ -49,7 +49,7 @@ class Tester():
         self.layers = args.layers
         # self.model = model
         self.ckp_dir = args.ckp_dir
-        self.net = DeepRX(18,2,1,n_chan=self.args.deepcnn).to('cpu')  #dec15
+        self.net = DeepRX(18,2,1,n_chan=self.args.deepcnn).cuda()#dec15
         # self.net = DenseNet(18,2,1,n_chan=self.args.deepcnn).cuda() #DenseNet
         # self.net = DeepRxNew(18,2,1,n_chan=self.args.deepcnn).cuda() #改写为module后的DeepRX
 
@@ -69,7 +69,7 @@ class Tester():
         # ckp = torch.load(load_model_dir, map_location=lambda storage, loc: storage.cuda(self.args.gpu_idx))
         ckp = torch.load(load_model_dir, map_location=torch.device('cpu'))
         self.net.load_state_dict(ckp['model'])
-        #self.net.to(torch.device('cpu'))
+        # self.net.to(torch.device('cpu'))
 
     def test(self):
         self.load_model()
@@ -210,7 +210,7 @@ class Tester():
         cam_rs11 = GradCAM(model=self.net, target_layers=target_rs11)
         cam_conv1 = GradCAM(model=self.net, target_layers=target_conv1)
         cam_conv_end = GradCAM(model=self.net, target_layers=target_conv_end)
-
+        
 
         for idx, data in enumerate(testloader): #enumerate(trainloader, 0):
             if idx %50==49:
@@ -219,8 +219,8 @@ class Tester():
             inputs, sigma_batch, dop, labels = inputs.to(device), snr.to(device), dop.to(device), labels.to(device)
             with torch.no_grad():
                 outputs=self.net(inputs)
-                #print('outputs.shape=',outputs.shape)
-                #print('labels.shape=',labels.shape)
+                print('outputs.shape=',outputs.shape)
+                print('labels.shape=',labels.shape)
                 # Affiche les 10 premiers LLR du premier exemple du batch
                 if idx == 0:
                     print("Exemple de sortie LLR (premier batch, premier sample):")
@@ -257,7 +257,7 @@ class Tester():
             inputs.requires_grad = True  # allow the backward
             
             
-            target_llr = [SingleLLRTarget(0)]  # Target LLR
+            target_llr = [SingleLLRTarget(1)]  # Target LLR
             grayscale_rs1 = cam_rs1(input_tensor=inputs, targets=target_llr)
             grayscale_rs2 = cam_rs2(input_tensor=inputs, targets=target_llr)
             grayscale_rs3 = cam_rs3(input_tensor=inputs, targets=target_llr)
@@ -341,7 +341,7 @@ class Tester():
             # plt.savefig(f"gradcam_batch_{idx}.png")
             # plt.close()
 
-
+        
         test_ber=test_ber_cnt/(len(testset)*(12-0.5)*24*2)
         # test_bler=test_bler/(idx+1)
         test_bler = test_bler/len(testset)

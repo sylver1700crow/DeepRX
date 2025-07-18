@@ -14,9 +14,9 @@ class get_config():
         # Parse from command line
         self.parser = argparse.ArgumentParser(description='MIMO')
         self.parser.add_argument('--log', default=False, help='write output to file rather than print into the screen')
-        self.parser.add_argument('--phase', type=str, default='test', help='train, test')
+        self.parser.add_argument('--phase', type=str, default='train', help='train, test')
         self.parser.add_argument('--resume_epoch', type=str, help='resume training from epoch ?')
-        self.parser.add_argument('--test_epoch', type=str, default='epoch4', help='test epoch')#
+        self.parser.add_argument('--test_epoch', type=str, default='epoch49', help='test epoch')#
         self.parser.add_argument('--resume',"--preprocess", type=str2bool, default='False', help='run prepare_data')#to begin the training 
         self.parser.add_argument('--gpu_idx', type=int, default=0, help='idx of gpu')
         self.parser.add_argument('--parallel', default=False, help='idx of gpu used')
@@ -26,7 +26,7 @@ class get_config():
         self.parser.add_argument('--optimizer', type=str, default='Adam', help='Optimizer: SGD, Adam, AdamW')
 
         # Training Parameters
-        self.parser.add_argument('--epoch', type=int, default=1, help='# of fine_epoch ')#50
+        self.parser.add_argument('--epoch', type=int, default=50, help='# of fine_epoch ')#50
         self.parser.add_argument('--fcn_chan', type=int, default=32, help='# FCN inter channel ')
         self.parser.add_argument('--tr_batch', type=int, default=100, help='batch size')
         self.parser.add_argument('--ts_batch', type=int, default=100, help='batch size')
@@ -47,9 +47,9 @@ class get_config():
         self.parser.add_argument('--rx_ants', type=int, default=4, help='Number of RX antennas')#
         self.parser.add_argument('--doppler', type=int, default=90, help='doppler value')#90
         self.parser.add_argument('--ts_doppler', type=int, default=90, help='test doppler value')#90
-        self.parser.add_argument('--dB', type=int, default=5, help='SNR')#30
+        self.parser.add_argument('--dB', type=int, default=30, help='SNR')#30
         self.parser.add_argument('--tv_snr', type=int, default=30, help='test SNR')#30 et ts_snr
-        self.parser.add_argument('--ts_snr', type=int, default=10, help='test SNR')# validation
+        self.parser.add_argument('--ts_snr', type=int, default=5, help='test SNR')# test
         self.parser.add_argument('--save_epoch', type=int, default=20, help='save ckp frequency')
         self.parser.add_argument('--fcn1_chan', type=int, default=3, help='NN Depth')
         self.parser.add_argument('--fcn2_chan', type=int, default=3, help='NN Depth')
@@ -97,6 +97,6 @@ class get_config():
 
         elif self.phase == 'test':
             self.test_info = self.info
-            self.test_ckp_dir =self.ckp_dir+self.test_epoch
+            self.test_ckp_dir = self.ckp_dir+self.test_epoch
             self.test_verbose = True
             

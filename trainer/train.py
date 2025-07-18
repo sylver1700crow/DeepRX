@@ -43,7 +43,7 @@ class Trainer():
         self.noise = args.noise
         self.criterion=nn.BCELoss()
         #self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.net = DeepRX(18,2,1,n_chan=self.args.deepcnn).to('cpu')  #原来的DeepRX
+        self.net = DeepRX(18,2,1,n_chan=self.args.deepcnn).cuda()   #原来的DeepRX
         # self.net = DeepRxNew(18,2,1,n_chan=self.args.deepcnn).cuda() #改写为module后的DeepRX
         # self.net = DenseNet(18,2,1,n_chan=self.args.deepcnn).cuda() #DenseNet
 
@@ -164,6 +164,7 @@ class Trainer():
         dop=self.args.doppler
         my_batch_size=self.batch_size
         valid_snr=int(self.args.tv_snr)
+        #test_snr=int(self.args.ts_snr)
         RX_Ants_list = [self.args.rx_ants]#
 
         print('Phase: load valid data')
@@ -179,7 +180,7 @@ class Trainer():
 
         print('\nPhase: load train data')
         # train_input, tr_snr, tr_dop, train_label, tr_Hid = load_data(dop,snr=[30,20,10,0,-5,-10], data_per=1.0, phase='train', dataset_name='CDL-A')
-        train_input, tr_snr, tr_dop, train_label, tr_Hid = load_data(dop,snr=[30], data_per=1.0, phase='train', dataset_name=['CDL-A'],RX_Ants_list=RX_Ants_list)
+        train_input, tr_snr, tr_dop, train_label, tr_Hid = load_data(dop,snr=[30,20,10,0,-5,-10], data_per=1.0, phase='train', dataset_name=['CDL-A'],RX_Ants_list=RX_Ants_list)
         # [30]
         # trainset = MyDataset(x = train_input, snr=tr_snr, dop=tr_dop, label = train_label, ideal_H=tr_Hid)
         trainset = MyDataset(x = train_input, snr=tr_snr, dop=tr_dop, label = train_label)
@@ -188,7 +189,7 @@ class Trainer():
 
         print('\nPhase: load test data')
         #ts_input, ts_snr, ts_dop, ts_label, ts_Hid = load_data(dop, snr=[valid_snr], data_per=0.01, phase='test', dataset_name='old_EVA')
-        ts_input, ts_snr, ts_dop, ts_label, ts_Hid = load_data(dop, snr=[10], data_per=0.01, phase='test', dataset_name=['CDL-A'],RX_Ants_list=RX_Ants_list)
+        ts_input, ts_snr, ts_dop, ts_label, ts_Hid = load_data(dop, snr=[valid_snr], data_per=0.01, phase='test', dataset_name=['CDL-A'],RX_Ants_list=RX_Ants_list)
         # testset = MyDataset(x = ts_input,snr=ts_snr, dop=ts_dop, label = ts_label, ideal_H=ts_Hid)
         testset = MyDataset(x = ts_input,snr=ts_snr, dop=ts_dop, label = ts_label)
         testloader = torch.utils.data.DataLoader(testset, batch_size=my_batch_size, shuffle=False, num_workers=8)
